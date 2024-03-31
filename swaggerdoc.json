@@ -1,0 +1,457 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Nursery system",
+    "description": "Description",
+    "version": "1.0.0"
+  },
+  "host": "localhost:8080",
+  "basePath": "/",
+  "schemes": [
+    "http"
+  ],
+  "tags": [
+    { "name": "Login", "description": "Login in our system" },
+    { "name": "Teacher", "description": "ALL Teachers Operations" },
+    { "name": "Children", "description": "ALL Children Operations" },
+    { "name": "Class", "description": "All classes Operations" },
+    { "name": "Password Reset", "description": "password reset Operation" }
+  ],
+  "securityDefinitions": {
+    "BearerAuth": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header"
+    }
+  },
+  "paths": {
+
+    "/resetPassword/{id}": {
+      "post": {
+        "tags": ["Password Reset"],
+        "description": "Endpoint to reset user's password",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "type": "string" },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": { "newPassword": { "type": "string", "example": "newPassword123" } },
+              "required": ["newPassword"]
+            }
+          }
+        ],
+        "responses": {
+          "200": { "description": "OK" },
+          "401": { "description": "Unauthorized" }
+        
+        },
+        "security": [{ "BearerAuth": [] }]
+      }
+    },
+    "/login": {
+      "post": {
+        "tags": ["Login"],
+        "description": "Login is an endpoint to authenticate users",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string","example": "user@example.com"
+                },
+                "password":{"type":"string" , "format": "password", "example": "mypass"}
+              },
+              "required":["email","password"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": 
+          { "description": "Unauthorized" }
+        }
+      }
+    },
+    "/teachers/supervisors": {
+      "get": {
+        "tags": ["Teacher"],
+        "description": "Get all supervisors teachers" ,
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/teachers": {
+      "get": {
+        "tags": ["Teacher"],
+        "description": "Get all teachers",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [{ "BearerAuth": [] }]
+      },
+      "post": {
+        "tags": ["Teacher"],
+        "description": "Create a new teacher",
+
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "fullName": { "type": "string", "example": "menna mahmoud" },
+                "email": { "type": "string", "example": "teacher@example.com" },
+                "password": { "type": "string", "example": "password123" },
+                "isSupervisor": {
+                  "example": "true"
+                }
+              },
+              "required": ["fullName", "email", "password"]
+            }
+          }
+        ],
+        "responses": {
+         
+          "201": {
+            "description": "Created"
+          },
+          "400": { "description": "Bad Request" }
+        }
+      }
+    },
+    "/teachers/{id}": {
+      "get": { 
+      "tags": ["Teacher"],
+      "description": "Get a teacher by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [{ "BearerAuth": [] }]
+      },
+      "put": {
+        "tags": ["Teacher"],
+        "description": "Update a teacher by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "example": "660361c643e7809f59e80746"
+                },
+                "fullName": { "type": "string", "example": "Ali Ahmed" },
+                "email":
+                 { "type": "string", "example": "teacher@example.com" },
+                "password": 
+                { "type": "string", "example": "newPassword123" },
+                "image": {
+                  "example": "any"
+                }
+                
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Teacher"],
+        "description": "Delete a teacher by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "example": "660361c643e7809f59e80746"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "204": { "description": "No Content" } 
+        },
+        "security": [{ "BearerAuth": [] }]
+      }
+    },
+    "/children": {
+      "get": {
+        "tags": ["Children"],
+        "description": "Get all children",
+        "responses": { "200": { "description": "OK" } },
+        "security": [{ "BearerAuth": [] }]
+      },
+      "post": {
+        "tags": ["Children"],
+        "description": "Create a new child",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "fullName": { "type": "string", "example": "John Doe" },
+                "age": { "type": "number", "example": 5 },
+                "level": { "type": "string", "example": "PreKG" },
+                "address": { "type": "string", "example": "123 Main St" }
+              },
+              "required": ["fullName", "age", "level", "address"]
+              }
+            }
+          
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": { "description": "Bad Request" }
+        },
+        "security": [{ "BearerAuth": [] }]
+      }
+    },
+    "/children/{id}": {
+      "get": {
+        "tags": ["Children"],
+        "description": "Get a child by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": { "description": "Not Found" }
+        },
+        "security": [{ "BearerAuth": [] }]
+      },
+      "put": {
+        "description": "Update a child by ID",
+        "tags": ["Children"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object"
+            
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": { "description": "Not Found" }
+        },
+        "security": [{ "BearerAuth": [] }]
+      },
+      "delete": {
+        "tags": ["Children"],
+        "description": "Delete a child by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": { "description": "Not Found" }
+        },
+        "security": [{ "BearerAuth": [] }]
+      }
+    },
+
+    "/class": {
+      "get": {
+        "tags": ["Class"],
+        "description": "Get all classes",
+        "responses": { "200": { "description": "OK" } },
+        "security": [{ "BearerAuth": [] }]
+      },
+      "post": {
+        "tags": ["Class"],
+        "description": "Create a new class",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "className": { "type": "string", "example": "Class A" },
+                "supervisor": { "type": "string", "example": "John Doe" },
+                "children": { "type": "array", "items": { "type": "number" }, "example": [1, 2, 3] }
+              },
+              "required": ["className", "supervisor"]
+            }
+          }
+        ],
+        "responses": {
+          "201": { "description": "Created" },
+          "422": { "description": "Unprocessable Entity" }
+        },
+        "security": [{ "BearerAuth": [] }]
+      }
+    },
+
+    "/class/{id}": {
+      "get": {
+        "tags": ["Class"],
+        "description": "Get a class by ID",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "type": "string" }
+        ],
+        "responses": {
+          "200": { "description": "OK" },
+          "404": { "description": "Not Found" }
+        },
+        "security": [{ "BearerAuth": [] }]
+      },
+      "put": {
+        "tags": ["Class"],
+        "description": "Update a class by ID",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "type": "string" },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "className": { "type": "string", "example": "Class A" },
+                "supervisor": { "type": "string", "example": "John Doe" },
+                "children": { "type": "array", "items": { "type": "number" }, "example": [1, 2, 3] }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": { "description": "Created" },
+          "422": { "description": "Unprocessable Entity" }
+        },
+        "security": [{ "BearerAuth": [] }]
+      },
+      "delete": {
+        "tags": ["Class"],
+        "description": "Delete a class by ID",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "type": "string" }
+        ],
+        "responses": { "204": { "description": "No Content" } },
+        "security": [{ "BearerAuth": [] }]
+      }
+    },
+  
+   
+
+    "/class/child/{id}": {
+      "get": {
+        "tags": ["Children"],
+        "description": "Get children in a class by class ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },  
+        "security": [{ "BearerAuth": [] }]
+      }
+    },
+    "/class/teacher/{id}": {
+      "get": {
+        "tags": ["Teacher"],
+        "description": "Get the teacher of a class by class ID",
+      
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [{ "BearerAuth": [] }]
+      }
+    }
+  }
+}
+
