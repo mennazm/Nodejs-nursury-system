@@ -5,7 +5,7 @@ const teacherSchema = mongoose.model("teachers");
 
 
 
-
+// nnnn
 
 module.exports = async(req, res, next)=>{
     if(req.token.role === "admin" || req.token._id === +req.params.id)
