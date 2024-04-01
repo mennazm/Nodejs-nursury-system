@@ -87,7 +87,8 @@
           "200": {
             "description": "OK"
           }
-        }
+        },
+        "security": [{ "BearerAuth": [] }]
       }
     },
     "/teachers": {
@@ -129,7 +130,8 @@
             "description": "Created"
           },
           "400": { "description": "Bad Request" }
-        }
+        },
+        "security": [{ "BearerAuth": [] }]
       }
     },
     "/teachers/{id}": {
@@ -179,10 +181,11 @@
                 "password": 
                 { "type": "string", "example": "newPassword123" },
                 "image": {
-                  "example": "any"
+                  "example": "image.jpg/png/jpeg etc."
                 }
                 
               }
+             
             }
           }
         ],
@@ -190,7 +193,7 @@
           "200": {
             "description": "OK"
           }
-        }
+        }, "security": [{ "BearerAuth": [] }]
       },
       "delete": {
         "tags": ["Teacher"],
